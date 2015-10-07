@@ -19,15 +19,13 @@ archiveSites('sample.tsv')
 '''
 
 def archiveSites(file_name):
-	rewriteRules = []
 	sites = loadTSVFile(file_name)
-	for website in sites:
-		print "archive " + website["URL"] + " as " + website["Name"] + " to " + website["Redirect"]
-		archive_site(website["URL"], website["Name"])
-		rewriteRules.append(generateRewriteRule(website["URL"], website["Redirect"]) )
 	with open('RewriteRules.txt', 'a+') as file_handle:
-		for line in rewriteRules:
-			file_handle.write(line + "\n")
+		file_handle.write("\t#\n")
+		for website in sites:
+			archive_site(website["URL"], website["Name"])
+			rewriteRule = generateRewriteRule(website["URL"], website["Redirect"])
+			file_handle.write("\t" + rewriteRule + "\n")
 	file_handle.close()
 	return
 
