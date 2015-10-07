@@ -7,12 +7,6 @@ import shutil
 Utility intended to aid in archiving snapshots of a website.
 '''
 
-# grabs the supplied website url from the web and copies it to the current directory
-# Dependency: wget is not natively available on Mac or Windows
-def wget_wrapper(site):
-	os.system( 'wget --mirror -np -p --html-extension -e robots=off --base=./ -k -P ./ ' + site )
-	return
-
 
 def archive_site(target_url):
 	wget_wrapper(target_url)
@@ -24,6 +18,13 @@ def archive_site(target_url):
 	zip_folder(newDirName, newDirName + '.zip')
 	print "Archived to " + newDirName + '.zip'
 	shutil.rmtree(newDirName)
+
+
+# grabs the supplied website url from the web and copies it to the current directory
+# Dependency: wget is not natively available on Mac or Windows
+def wget_wrapper(site):
+	os.system( 'wget --mirror -np -p --html-extension -e robots=off --base=./ -k -P ./ ' + site )
+	return
 
 
 # Source: https://www.calazan.com/how-to-zip-an-entire-directory-with-python/
