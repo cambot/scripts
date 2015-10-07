@@ -2,10 +2,17 @@ import zipfile
 import sys
 import os
 import shutil
+import csv
 
 '''
-Utility intended to aid in archiving snapshots of a website.
+Utility intended to aid in archiving snapshots of a list of websites.
 '''
+
+# Load a *.tsv file and return a list of dictionaries of the values
+#    tsv = Tab separated values
+def loadTSVFile(file_name):
+	with open(file_name) as file_handle:
+		return [row for row in csv.DictReader(file_handle, delimiter="\t")]
 
 
 def archive_site(target_url):
