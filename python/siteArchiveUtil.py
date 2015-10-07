@@ -76,7 +76,7 @@ def zip_folder(folder_path, output_path):
     # Retrieve the paths of the folder contents.
     contents = os.walk(folder_path)
     try:
-        zip_file = zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED)
+        zip_file = zipfile.ZipFile(output_path, 'w', zipfile.ZIP_DEFLATED, True)
         for root, folders, files in contents:
             # Include all subfolders, including empty ones.
             for folder_name in folders:
