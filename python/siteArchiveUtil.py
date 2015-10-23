@@ -20,20 +20,27 @@ archiveSites('sample.tsv')
 
 def archiveSites(file_name):
 	sites = loadTSVFile(file_name)
+	for website in sites:
+		archive_site(website["URL"], website["Name"])
+		rewriteRule = generateRewriteRule(website["URL"], website["Redirect"])
+	return
+
+def generateRewriteRules(file_name):
+	sites = loadTSVFile(file_name)
 	with open('RewriteRules.txt', 'a+') as file_handle:
 		file_handle.write("\t#\n")
 		for website in sites:
-			archive_site(website["URL"], website["Name"])
 			rewriteRule = generateRewriteRule(website["URL"], website["Redirect"])
 			file_handle.write("\t" + rewriteRule + "\n")
 	file_handle.close()
 	return
 
 
+
 # Ex: RewriteRule ^erniepyle(.*)$ http://mediaschool.indiana.edu/erniepyle/$1 [R=301,NC,L]
 def generateRewriteRule(old_url, new_url):
 	subsite = extractSubsite(old_url)
-	return "RewriteRule ^" + subsite + "(.*)$ " + new_url + "$1 [R=301,NC,L]"
+	return "RewriteRule ^" + subsite + "(.*)$ " + new_url + " [R=301,NC,L]"
 
 # Load a *.tsv file and return a list of dictionaries of the values
 #    tsv = Tab separated values
