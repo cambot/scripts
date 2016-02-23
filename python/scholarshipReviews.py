@@ -58,6 +58,8 @@ def scrubData(entry):
 	cleanup = getNumValColumns()
 	if ('Reviewer Name' in entry):
 		data['Reviewer'] = entry['Reviewer Name']
+	else:
+		data['Reviewer'] = 'missing'
 	#
 	for field in mapping:
 		data[field] = entry[field]
