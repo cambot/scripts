@@ -15,7 +15,7 @@ function loadCSVFile($fileName) {
 			}
 			$row++;
 		}
-		fclose($fileName);
+		fclose($file);
 		return $values;
 	}
 	else {
