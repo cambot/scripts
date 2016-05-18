@@ -37,7 +37,7 @@ def generateRewriteRules(file_name):
 
 
 
-# Ex: RewriteRule ^erniepyle(.*)$ http://mediaschool.indiana.edu/erniepyle/$1 [R=301,NC,L]
+# Ex: RewriteRule ^foo(.*)$ http://example.com/foo/$1 [R=301,NC,L]
 def generateRewriteRule(old_url, new_url):
 	subsite = extractSubsite(old_url)
 	return "RewriteRule ^" + subsite + "(.*)$ " + new_url + " [R=301,NC,L]"
@@ -50,10 +50,10 @@ def loadTSVFile(file_name):
 
 
 def archive_site(target_url, zipName=None):
-	x = target_url.split("//")[1]   # journalism.indiana.edu/resources/webediting
-	oldDirName = x.split('/')[0]    # journalism.indiana.edu
+	x = target_url.split("//")[1]   # example.com/resources/webediting
+	oldDirName = x.split('/')[0]    # example.com
 	if zipName is None:
-		zipName = x.replace('/', '_')   # journalism.indiana.edu_resources_webediting
+		zipName = x.replace('/', '_')   # example.com_resources_webediting
 	wget_wrapper(target_url)
 	print "Renaming " + oldDirName + " to " + zipName
 	os.rename(oldDirName, zipName)
