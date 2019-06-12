@@ -14,3 +14,14 @@ __pycache__
 # Data Files #
 ##############
 *.csv
+
+# git-mergetool #
+#################
+*.orig
+
+# Notepad ++ #
+##############
+*_BACKUP_*.xml
+*_BASE_*.xml
+*_LOCAL_*.xml
+*_REMOTE_*.xml
