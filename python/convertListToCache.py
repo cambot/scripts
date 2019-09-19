@@ -1,5 +1,3 @@
-from string import split,find
-
 #############
 # Convert List to cache set statements that can be pasted into a terminal
 #############
@@ -9,13 +7,13 @@ def convertToCache(fname,var):
 	f.close()
 	newFile=fname[0:fname.find(".")] + ".M"
 	f=open(newFile,'w')
-	if find(var,'(') == -1:
+	if var.find('(') == -1:
 		var=var+'('
 	for line in file:
-		if find(line,"\n") <> -1:
-			line=line[0:find(line,"\n")]
-		if (find(line,"\t") <> -1):
-			index,value=split(line,'\t',1)
+		if line.find("\n") != -1:
+			line=line[0:line.find("\n")]
+		if (line.find("\t") != -1):
+			(index,value)=line.split('\t')
 			value = '"' + value + '"'
 		else:
 			index=line
