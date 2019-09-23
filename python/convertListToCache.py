@@ -1,7 +1,9 @@
+import sys
+
 #############
 # Convert List to cache set statements that can be pasted into a terminal
 #############
-def convertToCache(fname, var):
+def convertToCache(fname, var = 'array'):
 	f = open(fname, 'r')
 	file = f.readlines()
 	f.close()
@@ -21,3 +23,11 @@ def convertToCache(fname, var):
 		val = 's ' + var + '"' + index + '")=' + value + '\n'
 		f.write(val)
 	f.close
+
+
+########
+if __name__ == "__main__":
+    if (len(sys.argv) > 2):
+    	convertToCache(sys.argv[1], sys.argv[2])
+    if (len(sys.argv) == 2):
+    	convertToCache(sys.argv[1])
