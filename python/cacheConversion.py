@@ -2,21 +2,25 @@ from string import *
 # import os   # don't want os.open overwriting standard open
 from os import walk, path, remove
 import filecmp
+import sys
 
 
 def allEnvironments():
     return ['prod-sync', 'uat-sync', 'ManualExport']
 
 
-def processAll(envList, deleteFlag = False):
+def processAll(envList, deleteFlag = True):
     for env in envList:
         processFolder(env, deleteFlag)
-    compareFolders('prod-sync', 'ManualExport', 'prod-vs-local_diff-only.tsv')
-    compareFolders('prod-sync', 'uat-sync', 'prod-vs-uat_diff-only.tsv')
+    if ('prod-sync' not in envList): return
+    if ('ManualExport' in envList):
+        compareFolders('prod-sync', 'ManualExport', 'prod-vs-local_diff-only.tsv')
+    if ('uat-sync' in envList):
+        compareFolders('prod-sync', 'uat-sync', 'prod-vs-uat_diff-only.tsv')
     return
 
 
-def processFolder(folder, deleteFlag = False):
+def processFolder(folder, deleteFlag = True):
     target = '.\\' + folder + '\\cacheSources\\'
     print(target)
     for root, dirList, fileList in walk(target):
@@ -88,3 +92,10 @@ def writeLog(log,fname):
         for line in log:
             f.write(line+"\n")
     return
+
+########
+if __name__ == "__main__":
+    envList = ['git-release-branch', 'git-master-branch']
+    if (len(sys.argv) > 1):
+        envList.append(sys.argv[1])
+    processAll(envList)
