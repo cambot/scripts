@@ -5,8 +5,12 @@ import sys
 
 from process import *
 
+
 ################################
-# Developed on 3.9.6
+#
+#   Main Entry Point
+#
+################################
 
 def process(swaggerFile):
     print("Loading Swagger File.")
@@ -75,6 +79,11 @@ def processPostmanFolder(postmanFolder):
         else:
             output.append(extractPostmanRecord(request))
     return output
+
+
+##################################
+#       Utility functions        #
+##################################
 
 
 def loadJSONRecord(file):
