@@ -15,3 +15,11 @@ are expected in this order:
 3. Tally column name for the final csv
 
 The resulting gap analysis is saved to the file `API_Gap_Analysis.csv`.
+
+## Testing
+
+Unit tests are present on the record processing and matching parts:
+
+```
+python -m unittest process.py
+```
