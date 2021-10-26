@@ -23,7 +23,7 @@ def process(swaggerFile):
         tallyColumns.append(column)
         swaggerSpecs = tallyPostmanRequests(swaggerSpecs, postmanRequests, column)
     fieldNames = fieldNames + ['Total', 'summary', 'description']
-    saveToCSV('.//API_Catalogue.csv', fieldNames, swaggerSpecs)
+    saveToCSV('.//API_Gap_Analysis.csv', fieldNames, swaggerSpecs)
 
 
 def loadPostmanCatalogue(fileName = './/data//collections.csv'):
