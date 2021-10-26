@@ -32,10 +32,9 @@ def loadPostmanCatalogue(fileName = './/data//collections.csv'):
         csvReader = csv.reader(csvFile, delimiter='\t')
         for row in csvReader:
             record = {
-                'url': row[0],
-                'type': None,
-                'applications': row[1],
-                'permissions': row[2],
+                'collection': row[0],
+                'csv_file': row[1],
+                'subtally_column': row[2],
             }
             postmanCollections.append(row)
         csvFile.close()
