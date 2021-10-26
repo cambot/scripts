@@ -20,7 +20,6 @@ def process(swaggerFile):
         postmanRequests = extractPostmanCollection(os.path.join('.//data//', collection))
         saveToCSV(file, postmanFields, postmanRequests)
         fieldNames.append(column)
-        tallyColumns.append(column)
         swaggerSpecs = tallyPostmanRequests(swaggerSpecs, postmanRequests, column)
     fieldNames = fieldNames + ['Total', 'summary', 'description']
     saveToCSV('.//API_Gap_Analysis.csv', fieldNames, swaggerSpecs)
