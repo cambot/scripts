@@ -4,9 +4,7 @@ import sys
 # Convert List to cache set statements that can be pasted into a terminal
 #############
 def convertToCache(fname, var = 'array'):
-	f = open(fname, 'r')
-	file = f.readlines()
-	f.close()
+	file = getData(fname)
 	newFile = fname[0:fname.rfind(".")] + ".M"
 	f = open(newFile, 'w')
 	if var.find('(') == -1:
@@ -23,6 +21,13 @@ def convertToCache(fname, var = 'array'):
 		val = 's ' + var + '"' + index + '")=' + value + '\n'
 		f.write(val)
 	f.close
+
+	
+def getData(fname):
+	f = open(fname, 'r')
+	file = f.readlines()
+	f.close()
+	return file
 
 
 ########
