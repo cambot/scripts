@@ -7,7 +7,7 @@ def convertToCache(fname, var = 'array'):
 	f = open(fname, 'r')
 	file = f.readlines()
 	f.close()
-	newFile = fname[0:fname.find(".")] + ".M"
+	newFile = fname[0:fname.rfind(".")] + ".M"
 	f = open(newFile, 'w')
 	if var.find('(') == -1:
 		var = var + '('
