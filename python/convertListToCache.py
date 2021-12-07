@@ -4,9 +4,14 @@ import sys
 # Convert List to cache set statements that can be pasted into a terminal
 #############
 def convertToCache(fname, var = 'array'):
-	file = getData(fname)
+	fileData = getData(fname)
+	commands = makeOrderedList(var, fileData)
 	newFile = fname[0:fname.rfind(".")] + ".M"
-	f = open(newFile, 'w')
+	saveCommands(commands, newFile)
+
+
+def makeIndexedList(var, data):
+	commands = []
 	if var.find('(') == -1:
 		var = var + '('
 	for line in file:
@@ -18,16 +23,35 @@ def convertToCache(fname, var = 'array'):
 		else:
 			index = line
 			value = '1'
-		val = 's ' + var + '"' + index + '")=' + value + '\n'
-		f.write(val)
-	f.close
+		command = 's ' + var + '"' + index + '")=' + value + '\n'
+		commands.append(command)
+	return commands
 
+
+def makeOrderedList(var, data):
+	if var.find('(') == -1:
+		var = var + '($i(' + var + '))'
+	commands = []
+	for line in data:
+		if line.find("\n") != -1:
+			line = line[0:line.find("\n")]
+		command = 'set ' + var + '="' + line + '"'
+		commands.append(command)
+	return commands
 	
+
 def getData(fname):
 	f = open(fname, 'r')
 	file = f.readlines()
 	f.close()
 	return file
+
+
+def saveCommands(commands, fileName):
+	with open(fileName, 'w') as f:
+		for line in commands:
+			f.write(line + "\n")
+		f.close
 
 
 ########
