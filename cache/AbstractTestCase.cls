@@ -101,4 +101,9 @@ Method AssertListsAreEqual(expected, actual, description = "")
 	}
 }
 
+Method AssertArrayHasIndex(array, index)
+{
+	do $$$AssertTrue($data(array(index)) > 0, "Assert array contains the index '" _ index _ "'")
+}
+
 }
