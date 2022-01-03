@@ -82,4 +82,23 @@ Method AssertListsContainSameItems(expected, actual, description)
 	}
 }
 
+/// Verify lists are equal
+Method AssertListsAreEqual(expected, actual, description = "")
+{
+	if '$listvalid(expected) {
+		do $$$AssertFailure("AssertListsAreEqual "_description _ " expected value is not a list")
+	}
+	if '$listvalid(actual) {
+		do $$$AssertFailure("AssertListsAreEqual "_description _ " actual value is not a list")
+	}
+	if $listsame(expected, actual) {
+		do $$$AssertSuccess("AssertListsAreEqual " _ description)
+	}
+	else {
+		set message = " Expected list: " _ $LISTTOSTRING(expected, ", ")
+		set message = message_" Actual list: " _ $LISTTOSTRING(actual, ", ")
+		do $$$AssertFailure("AssertListsAreEqual "_description _ message)
+	}
+}
+
 }
