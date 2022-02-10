@@ -5,11 +5,12 @@ Class Tests.Report Extends %RegisteredObject
 /// <ul>
 ///  <li>header: header text to include in the report</li>
 ///  <li>runId (optional): ID of the unit test run to generate the report for.  Default is to use the most recent id.</li>
+///  <li>outStream (optional): %Stream.FileBinary to direct output to.  Default: terminal.</li>
 /// </ul>
-ClassMethod Run(header As %String = "", runId As %Integer = "")
+ClassMethod Run(header As %String = "", runId As %Integer = "", ByRef outStream As %Stream.FileBinary = "")
 {
 	do ..GatherTestMetrics(.data, runId)
-	do ..DisplaySummary(.data, header)
+	do ..DisplaySummary(.data, header, outStream)
 }
 
 /// Compile all the test data metrics.  If an ID is not provided, then the most recent
