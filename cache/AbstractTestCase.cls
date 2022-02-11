@@ -1,7 +1,10 @@
+/// This class expands upon Cache/Iris' built in unit tests assertion library to provide 
+///   more options similar to other xUnit frameworks as well as assertions for built-in
+///   data structures.
 Class Tests.AbstractTestCase Extends %UnitTest.TestCase
 {
 
-/// Wrapper plus some.
+/// Like $$$AssertEquals, but only appends the expected and actual values when the values do not match.
 Method AssertEquals(expected, actual, description = "")
 {
 	if (expected = actual) {
@@ -12,6 +15,7 @@ Method AssertEquals(expected, actual, description = "")
 	}
 }
 
+/// Like <code>$$$AssertEquals("", actualValue)</code>, but with a more readable failure message.
 Method AssertIsEmptyString(actual, description = "")
 {
 	set message = description
@@ -23,6 +27,7 @@ Method AssertIsEmptyString(actual, description = "")
 	}
 }
 
+/// Asserts if the value passed is a dynamic object without any properties.
 Method AssertIsEmptyObject(actual, description = "")
 {
 	if (actual.%IsA("%Library.DynamicObject") = 0) {
@@ -39,8 +44,14 @@ Method AssertIsEmptyObject(actual, description = "")
 	}
 }
 
-/// sample usage: <br>
-/// do ..AssertEqualsWithinDelta($p(dataObj.LastPWChange,",",2), $p(currentDateTime,",",2), 1, "Property should be set to current time.")
+/// Assert that the actual value is within a certain delta amount of an expected value.  This is useful for
+///  comparing timestamp values that may differ by a few seconds due to the runtime of the code
+///  under tesing.
+/// <example>
+/// set dataObj = ##class(My.Class).%New()
+/// do ..AssertEqualsWithinDelta($piece(dataObj.DateTimeCreated, ",", 2),
+///             $piece($h, ",", 2), 1, "Property should be set to current time.")
+/// </example>
 Method AssertEqualsWithinDelta(expected, actual, delta, description = "")
 {
 	set difference = $zabs(expected - actual)
@@ -52,7 +63,10 @@ Method AssertEqualsWithinDelta(expected, actual, delta, description = "")
 	}
 }
 
-/// Verify lists contain the same items, but where order does not matter
+/// Verify lists contain the same items, but where order does not matter.
+/// <example>
+/// do ..AssertListContainsSameItems($lb(3,5), $lb(5,3), "This assert should pass.")
+/// </example>
 Method AssertListsContainSameItems(expected, actual, description)
 {
 	set missingList = ""
@@ -82,7 +96,10 @@ Method AssertListsContainSameItems(expected, actual, description)
 	}
 }
 
-/// Verify lists are equal
+/// Assert that two lists are equal
+/// <example>
+/// do ..AssertListsAreEqual($lb(3,5), $lb(3,5), "This assert should pass.")
+/// </example>
 Method AssertListsAreEqual(expected, actual, description = "")
 {
 	if '$listvalid(expected) {
@@ -101,9 +118,42 @@ Method AssertListsAreEqual(expected, actual, description = "")
 	}
 }
 
+/// Assert that an array has a specific index
+/// <example>
+/// set myArray(3)="something"
+/// do ..AssertArrayHasIndex(.myArray, 3, "This assert should pass.")
+/// do ..AssertArrayHasIndex(.myArray, 4, "This assert should fail.")
+/// </example>
 Method AssertArrayHasIndex(array, index)
 {
 	do $$$AssertTrue($data(array(index)) > 0, "Assert array contains the index '" _ index _ "'")
+}
+
+/// Performs a shallow compare of two arrays.  Does not check for child nodes.
+/// <example>
+/// set firstArray(3)="something"
+/// set secondArray(3)="something"
+/// set thirdArray(3)="something"
+/// set thirdArray(5)="else"
+/// do ..AssertArraysAreEqual(.firstArray, .secondArray, "This assert should pass.")
+/// do ..AssertArraysAreEqual(.firstArray, .thirdArray, "This assert should fail because thirdArray has an extra subscript.")
+/// </example>
+Method AssertArraysAreEqual(expected, actual, description = "")
+{
+	set (i, j) = ""
+	for {
+		set i = $o(expected(i), 1, expectedVal)
+		set j = $o(actual(j), 1, actualVal)
+		if (i '= j) {
+			do $$$AssertFailure("Index mismatch.  Expected: "_i_" Actual: "_j)
+			quit
+		}
+		quit:( (i="") || (j="") )
+		if (expectedVal '= actualVal) {
+			do $$$AssertFailure("Index ("_i_") value mismatch.  Expected: "_expectedVal_" Actual: "_actualVal)
+		}
+	}
+	do $$$AssertSuccess("AssertArraysAreEqual " _ description)
 }
 
 }
