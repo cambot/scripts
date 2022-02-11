@@ -7,15 +7,18 @@ Class Tests.Report Extends %RegisteredObject
 ///  <li>runId (optional): ID of the unit test run to generate the report for.  Default is to use the most recent id.</li>
 ///  <li>outStream (optional): %Stream.FileBinary to direct output to.  Default: terminal.</li>
 /// </ul>
+/// <example>
+///  do ##class(Tests.Report).Run("Test Run")
+/// </example>
 ClassMethod Run(header As %String = "", runId As %Integer = "", ByRef outStream As %Stream.FileBinary = "")
 {
 	do ..GatherTestMetrics(.data, runId)
 	do ..DisplaySummary(.data, header, outStream)
 }
 
-/// Compile all the test data metrics.  If an ID is not provided, then the most recent
+/// Compile all the test data metrics for a particular test run.  If an ID is not provided, then the most recent
 ///  run id will be used (and returned).
-ClassMethod GatherTestMetrics(data, id As %Integer = "")
+ClassMethod GatherTestMetrics(ByRef data, ByRef id As %Integer = "")
 {
 	kill data
 	set:(id > $get(^UnitTest.Result)) id = $get(^UnitTest.Result)
@@ -82,7 +85,7 @@ ClassMethod GatherTestMetrics(data, id As %Integer = "")
 	set data("allTestsPass") = $data(data("FailedTests"))=0
 }
 
-/// Given data collected by GatherTestMetrics(), display a formatted report of
+/// Given data collected by <method>GatherTestMetrics</method>, display a formatted report of
 ///  the test run.  Optionally provide an output stream if you do not want to
 ///  write directly to the terminal.
 ClassMethod DisplaySummary(data, header As %String = "", ByRef outStream As %Stream.FileBinary = "")
@@ -137,7 +140,7 @@ ClassMethod FormatSummary(data, header As %String = "", report = "")
 	set report($i(report)) = "Total Time: "_$get(data("totalTime"))_" seconds"
 }
 
-/// Write out line to device.
+/// Write out line to device.  If no file stream is provided, write to terminal.
 ClassMethod Write(line As %String, ByRef outStream As %Stream.FileBinary = "")
 {
 	if (outStream '= "") {
